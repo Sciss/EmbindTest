@@ -2,7 +2,9 @@
 
 var LibraryTst = {
   initialize: function (callback) {
-    callback = Runtime.getFuncWrapper(callback, 'vi')
+    callback = getFuncWrapper(callback, 'vi')
+    // callback = Module.getFuncWrapper(callback, 'vi')
+    // callback = addFunction(callback, 'vi')
     var numBytes = 2 * Float32Array.BYTES_PER_ELEMENT
     var ptr = Module._malloc(numBytes)
 

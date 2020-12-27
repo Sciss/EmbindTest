@@ -1,8 +1,13 @@
 #include <cstdio>
+#include <emscripten.h>
 
 extern "C" {
-    void initialize(void (*callback)(float*));
+    extern void initialize(void (*callback)(float*));
 }
+
+// EM_ASM ({
+//   var callback = Runtime.getFuncWrapper($0, 'vi')
+// })
 
 void callback(float* output)
 {
