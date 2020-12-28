@@ -12,6 +12,7 @@ Resources:
 - [C++ to WebAssembly using Bazel and Emscripten](https://hackernoon.com/c-to-webassembly-using-bazel-and-emscripten-4him3ymc)
 - [Singleton pattern](https://groups.google.com/g/emscripten-discuss/c/MimQol7peuQ)
 - [Ideas why exported symbols might not work, keep alive](https://groups.google.com/g/emscripten-discuss/c/Wkq0lDi76eg)
+- [Issue - An efficient way to pass TypedArrays with Embind](https://github.com/emscripten-core/emscripten/issues/5519)
 
 ## Emscripten preparation
 
