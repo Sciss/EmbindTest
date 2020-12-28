@@ -29,6 +29,10 @@ What worked for me is the installation described there:
     python -m SimpleHTTPServer &
     xdg-open http://0.0.0.0:8000/
 
+## `cwrap` test
+
+    emcc -o cwrap-test.html -s 'EXTRA_EXPORTED_RUNTIME_METHODS=["cwrap"]' -s EXPORTED_FUNCTIONS='["_SquareVal", "_main"]' cwrap-test.cpp
+
 ## Plain C script-processor-node
 
 Not yet working!
