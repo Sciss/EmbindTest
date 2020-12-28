@@ -5,7 +5,8 @@ Step by step getting to setting up a web audio script processor node whose audio
 Note that code examples are adapted from various sources, e.g. Emscripten documentation, Gists, Stackoverflow ; unclear license terms
 (likely public domain).
 
-My main contribution is `class_proc.cpp` which I place in the public domain (CC0).
+My main contribution is `class_proc.cpp` which I place in the public domain (CC0). There may or may not be an online demo running at
+[www.sciss.de/temp/embind/class_proc.html](https://www.sciss.de/temp/embind/class_proc.html).
 
 Resources:
 

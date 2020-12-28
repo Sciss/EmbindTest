@@ -101,7 +101,16 @@ public:
 
   bool stop() {
     printf("AudioDriver: stop.\n");
-    return true;
+    
+    int res = EM_ASM_INT({
+      var ad = Module.audioDriver;
+      if (!ad) return -1;
+
+      ad.proc.disconnect(ad.context.destination);
+
+      return 0;
+    });
+    return res == 0;
   }
 
   void process() {
@@ -157,14 +166,19 @@ int main() {
   });
 
   auto d = new AudioDriver;
-  bool ok = d->setup();
-  if (!ok) {
+  bool okSetup = d->setup();
+  if (!okSetup) {
     printf("ERROR: Could not setup driver.\n");
     exit(1);
   }
 
-  d->start();
-  d->stop();
+  bool okStart = d->start();
+  if (!okStart) {
+    printf("ERROR: Could not start audio processing.\n");
+    exit(1);
+  }
+
+  // d->stop();
 
   printf("Done.\n");
   return 0;
