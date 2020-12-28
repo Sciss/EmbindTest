@@ -34,7 +34,10 @@ __work in progress__
 
 This also shows how to show the `what` string of a runtime exception the browser console
 
-    emcc --bind -o class_proc.html -s DISABLE_EXCEPTION_CATCHING=0 -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall"]' class_proc.cpp
+    emcc --bind -o class_proc.html -s DISABLE_EXCEPTION_CATCHING=0 \
+      -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","callMain"]' --pre-js class_proc-pre.js class_proc.cpp
+
+Or use `./build.sh`.
 
 ## Various Tests
 
