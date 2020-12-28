@@ -1,3 +1,6 @@
+// author: Hanns Holger Rutz
+// CC0 - public domain
+
 #include <emscripten/bind.h>
 #include <emscripten.h>
 #include <iostream>
@@ -63,6 +66,8 @@ public:
   bool start() {
     printf("AudioDriver: start.\n");
     printf("numChannels %d, bufSize %d.\n", numChannels, bufSize);
+    if (bufSize == 0) return false;
+
     return true;
   }
 
