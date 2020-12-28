@@ -21,6 +21,7 @@ var LibraryTst = {
       Module._free(ptr)
     }
   },
+  initialize__deps: ['$getFuncWrapper'],
 }
 
 mergeInto(LibraryManager.library, LibraryTst)

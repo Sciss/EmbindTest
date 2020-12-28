@@ -37,9 +37,10 @@ Not yet working!
 
 ## Creating Float32 array in JS
 
-Not yet working!
+We cannot create `Float32Array` in C++ and pass it to JS, but we can do the opposite: Allocate the array
+in JS _on the wasm heap_, and pass a pointer to a C++ callback:
 
-    emcc -O1 -Wall -Werror --bind -o pass_array.html --js-library pass_array_library.js pass_array.cpp
+    emcc -O1 --bind -o pass_array.html --js-library pass_array_library.js pass_array.cpp
 
 ## Instantiating class from JS
 
