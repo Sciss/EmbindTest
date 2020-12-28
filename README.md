@@ -41,6 +41,14 @@ Not yet working!
 
     emcc -O1 -Wall -Werror --bind -o pass_array.html --js-library pass_array_library.js pass_array.cpp
 
+## Instantiating class from JS
+
+Basically the example from the Embind documentation:
+
+    emcc -O1 --bind -o classes.html --post-js classes_post.cpp classes.cpp
+
+Make sure JS code runs inside `addOnPostRun` (see https://github.com/emscripten-core/emscripten/issues/13116 )
+
 ## Singleton pattern
 
 __This works__
