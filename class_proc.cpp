@@ -22,15 +22,19 @@ public:
 
   ~AudioDriver() {
     printf("AudioDriver: destructor.\n");
+    bufPtr = NULL;
+    AudioDriver::instance = NULL;
     EM_ASM({
       if (Module.audioDriver) {
         if (ad.context) {
           ad.context.close();
         }
+        if (ad.bufPtr) {
+          Module._free(ad.bufPtr);
+        }
         Module.audioDriver = undefined;
       }
     });
-    AudioDriver::instance = NULL;
   }
 
   void init_buffer(int numChannels, int bufSize, uintptr_t bufPtr) {
@@ -50,13 +54,29 @@ public:
       var ad          = Module.audioDriver;
       ad.context      = new AudioContext();
       ad.numChannels  = 2;
+      // using zero buffer size gives us default buffer size;
+      // we currently use zero inputs.
       ad.proc         = ad.context.createScriptProcessor(0, 0, ad.numChannels);
       ad.bufSize      = ad.proc.bufferSize;
       var numSamples  = ad.numChannels * ad.bufSize;
+      var numBytes    = numSamples * Float32Array.BYTES_PER_ELEMENT;
+      ad.bufPtr       = Module._malloc(numBytes);
+      ad.floatBuf     = [];
+      for (var ch = 0; ch < ad.numChannels; ch++) {
+        ad.floatBuf[ch] = new Float32Array(Module.HEAPU8.buffer, 
+          ad.bufPtr + (ch * ad.bufSize * Float32Array.BYTES_PER_ELEMENT), numSamples);
+      }
       var self        = Module.audio_driver();
-      self.init_buffer(ad.numChannels, ad.bufSize, 0);
+      self.init_buffer(ad.numChannels, ad.bufSize, ad.bufPtr);
       ad.proc.onaudioprocess = function(e) {
         self.process();
+        var bOut    = e.outputBuffer;
+        var bProc   = ad.floatBuf;
+        var numCh   = Math.min(bOut.numberOfChannels, ad.numChannels);
+        var bufSize = ad.bufSize;
+        for (var ch = 0; ch < numCh; ch++) {
+          bOut.copyToChannel(bProc[ch], ch, 0);
+        }
       };
       return 0;
     });
@@ -68,7 +88,15 @@ public:
     printf("numChannels %d, bufSize %d.\n", numChannels, bufSize);
     if (bufSize == 0) return false;
 
-    return true;
+    int res = EM_ASM_INT({
+      var ad = Module.audioDriver;
+      if (!ad) return -1;
+      
+      ad.proc.connect(ad.context.destination);
+
+      return 0;
+    });
+    return res == 0;
   }
 
   bool stop() {
@@ -77,7 +105,17 @@ public:
   }
 
   void process() {
-    printf("AudioDriver: process.\n");
+    // printf("AudioDriver: process.\n");
+    float *b = bufPtr;
+    int numCh = numChannels;
+    int n     = bufSize;
+    int i     = 0;
+    for (int ch = 0; ch < numCh; ch++) {
+      for (int stop = i + n; i < stop; i++ ) {
+        float r = emscripten_random();
+        b[i] = r * 0.4f - 0.2f; // -14 dBFS
+      } 
+    }
   }
 
   static AudioDriver* instance;
@@ -119,7 +157,7 @@ int main() {
   });
 
   auto d = new AudioDriver;
-  auto ok = d->setup();
+  bool ok = d->setup();
   if (!ok) {
     printf("ERROR: Could not setup driver.\n");
     exit(1);
