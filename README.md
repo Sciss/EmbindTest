@@ -28,16 +28,26 @@ What worked for me is the installation described there:
     ./emsdk activate latest
     source ./emsdk_env.sh
 
+As of this writing, the `emcc` version was `2.0.11`.
+
 ## C++ class script-processor-node
 
 __work in progress__
 
 This also shows how to show the `what` string of a runtime exception the browser console
 
-    emcc --bind -o class_proc.html -s DISABLE_EXCEPTION_CATCHING=0 \
+    emcc --bind -o class_proc.js -s DISABLE_EXCEPTION_CATCHING=0 \
       -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","callMain"]' --pre-js class_proc-pre.js class_proc.cpp
 
-Or use `./build.sh`.
+Or use `./build.sh`. Then start a web-server, e.g.
+
+    python -m SimpleHTTPServer &
+
+And view the HTML:
+
+    xdg-open http://0.0.0.0:8000/
+
+And select `class_proc.html`.
 
 ## Various Tests
 
@@ -46,8 +56,6 @@ These are individual tests conducted "on the way" to a working project.
 ### Plain C oscillator example
 
     emcc -O2 -Wall -Werror --bind -o oscillator.html oscillator.cpp
-    python -m SimpleHTTPServer &
-    xdg-open http://0.0.0.0:8000/
 
 ### `cwrap` test
 
