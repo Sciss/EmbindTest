@@ -56,9 +56,18 @@ Make sure JS code runs inside `addOnPostRun` (see https://github.com/emscripten-
 
 ## Singleton pattern
 
-__This works__
+A work-around getting hold of a C++ class within JS, when it was instantiated from C++; this works when only one instance exists:
 
     emcc --bind -o singleton.html singleton.cpp
 
 I suspect this will be the only reliable way to patch C++/JS together. We can use `EM_ASM` to set up the script processor node, and then the JS `onaudioprocess` function
 in turn calls into the C++ code, having a pointer to `_malloc` allocated wasm memory that is wrapped by an `Float32Array`.
+
+## C++ class script-processor-node
+
+__work in progress__
+
+This also shows how to show the `what` string of a runtime exception the browser console
+
+    emcc --bind -o class_proc.html -s DISABLE_EXCEPTION_CATCHING=0 -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall"]' class_proc.cpp
+
