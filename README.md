@@ -79,7 +79,7 @@ in JS _on the wasm heap_, and pass a pointer to a C++ callback:
 
 Basically the example from the Embind documentation:
 
-    emcc -O1 --bind -o classes.html --post-js classes_post.cpp classes.cpp
+    emcc -O1 --bind -o classes.html --post-js classes_post.js classes.cpp
 
 Make sure JS code runs inside `addOnPostRun` (see https://github.com/emscripten-core/emscripten/issues/13116 )
 
