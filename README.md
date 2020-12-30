@@ -33,10 +33,6 @@ As of this writing, the `emcc` version was `2.0.11`.
 
 ## C++ class script-processor-node
 
-__work in progress__
-
-This also shows how to show the `what` string of a runtime exception the browser console
-
     emcc --bind -o class_proc.js -s DISABLE_EXCEPTION_CATCHING=0 \
       -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall","callMain"]' --pre-js class_proc-pre.js class_proc.cpp
 
@@ -49,6 +45,8 @@ And view the HTML:
     xdg-open http://0.0.0.0:8000/
 
 And select `class_proc.html`.
+
+This class also shows how to show the `what` string of a runtime exception the browser console.
 
 ## Various Tests
 

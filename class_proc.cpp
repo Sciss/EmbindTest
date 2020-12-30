@@ -64,7 +64,7 @@ public:
       ad.floatBuf     = [];
       for (var ch = 0; ch < ad.numChannels; ch++) {
         ad.floatBuf[ch] = new Float32Array(Module.HEAPU8.buffer, 
-          ad.bufPtr + (ch * ad.bufSize * Float32Array.BYTES_PER_ELEMENT), numSamples);
+          ad.bufPtr + (ch * ad.bufSize * Float32Array.BYTES_PER_ELEMENT), ad.bufSize);
       }
       var self        = Module.audio_driver();
       self.init_buffer(ad.numChannels, ad.bufSize, ad.bufPtr);
